@@ -1,0 +1,25 @@
+.chart-wrapper {
+  margin-top: 1rem;
+}
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.toolbar button {
+  background: #e0f7fa;
+  border: 1px solid #00bcd4;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.toolbar .active {
+  background: #00bcd4;
+  color: white;
+}
+.download {
+  background: #4caf50;
+  color: white;
+  margin-left: auto;
+}

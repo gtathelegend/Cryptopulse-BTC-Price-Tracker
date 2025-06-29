@@ -1,0 +1,64 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  max-width: 300px;
+  padding: 1.2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+
+
+.card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.card .star {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.card.favorite {
+  transform: scale(1.15);
+  z-index: 10;
+  background: #e3f2fd;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card.shrunk {
+  transform: scale(0.9);
+  opacity: 0.6;
+}
+
+/* Dark mode support */
+.app.dark .card {
+  background: #1e1e1e;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+
+/* Responsive design tweaks */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    padding: 1rem;
+  }
+}
