@@ -1,11 +1,17 @@
 {
-  "name": "cryptopulse",
+  "name": "backend",
   "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "build": "cd frontend && npm install && npm run build"
+    "test": "node server.js"
   },
-  "engines": {
-    "node": "18.x"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
   }
 }
