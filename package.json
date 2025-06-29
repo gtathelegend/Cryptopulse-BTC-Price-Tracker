@@ -1,0 +1,11 @@
+{
+  "name": "cryptopulse",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node backend/server.js",
+    "build": "cd frontend && npm install && npm run build"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}

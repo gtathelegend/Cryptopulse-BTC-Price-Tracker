@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: cryptopulse
+    env: node
+    buildCommand: npm run build
+    startCommand: npm start
+    rootDir: .
+    envVars:
+      - key: NODE_VERSION
+        value: 18

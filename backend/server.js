@@ -1,12 +1,12 @@
 // backend/server.js
 
 const express = require('express');
-const axios = require('axios');
 const path = require('path');
+const app = express();
+const PORT = process.env.PORT || 10000;
+
 const cors = require('cors');
 
-const app = express();
-const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../frontend/build')));
@@ -38,5 +38,5 @@ app.get(/^\/(?!api).*/, (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
