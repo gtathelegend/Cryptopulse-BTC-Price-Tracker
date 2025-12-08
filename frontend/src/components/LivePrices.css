@@ -48,6 +48,52 @@
   opacity: 0.6;
 }
 
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .card {
+    max-width: 100%;
+    padding: 1rem;
+    font-size: 1.05rem;
+  }
+  .card .card-header h3 {
+    font-size: 1.1rem;
+  }
+  .card .star {
+    font-size: 1.6rem;
+    padding: 0.4rem;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
+    background: #e3f2fd;
+    color: #1565c0;
+    transition: background 0.2s;
+  }
+  .card .star:active {
+    background: #bbdefb;
+  }
+  .download-btn {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.8rem;
+    margin: 1rem 0 0.5rem 0;
+  }
+}
+
+/* Improved card appearance */
+.card {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+  border: 1px solid #e0e0e0;
+}
+.card .star:hover {
+  background: #bbdefb;
+  color: #ffb300;
+}
+
 /* Dark mode support */
 .app.dark .card {
   background: #1e1e1e;

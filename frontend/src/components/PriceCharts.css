@@ -23,3 +23,38 @@
   color: white;
   margin-left: auto;
 }
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .chart-wrapper {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+  }
+  .toolbar {
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: stretch;
+  }
+  .toolbar button {
+    width: 100%;
+    font-size: 1.05rem;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.2rem;
+  }
+  .download {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.8rem;
+  }
+}
+
+/* Improved button appearance */
+.toolbar button {
+  transition: background 0.2s, color 0.2s;
+}
+.toolbar button:hover {
+  background: #b2ebf2;
+  color: #0097a7;
+}

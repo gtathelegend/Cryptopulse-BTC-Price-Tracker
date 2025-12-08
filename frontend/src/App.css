@@ -48,6 +48,43 @@
   cursor: pointer;
 }
 
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .app {
+    font-size: 1.05rem;
+    padding: 0;
+  }
+  .content {
+    padding: 0.5rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .card {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+  .download-btn {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.8rem;
+    margin: 1rem 0 0.5rem 0;
+  }
+}
+
+/* Improved button appearance */
+.download-btn {
+  box-shadow: 0 2px 8px rgba(0,188,212,0.10);
+  transition: background 0.2s, color 0.2s;
+}
+.download-btn:hover {
+  background: #0097a7;
+  color: #ffe082;
+}
+
 .fade-enter {
   opacity: 0;
   transform: translateY(10px);
