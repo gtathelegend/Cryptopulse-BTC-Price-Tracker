@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Navbar from './components/Navbar';
 import LivePrices from './components/LivePrices';
 import PriceCharts from './components/PriceCharts';
@@ -17,6 +18,7 @@ function App() {
           {view === 'live' ? <LivePrices /> : <PriceCharts />}
         </main>
       </div>
+      <SpeedInsights />
     </ThemeContext.Provider>
   );
 }
