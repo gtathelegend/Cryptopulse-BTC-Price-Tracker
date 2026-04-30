@@ -1,54 +1,98 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { usePrices, CRYPTOS } from '../context/PricesContext';
 import './LivePrices.css';
 
-const CRYPTOS = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'XRPUSDT', 'DOGEUSDT'];
+const COIN_META = {
+  BTCUSDT:  { name: 'Bitcoin',      symbol: 'BTC', icon: '₿' },
+  ETHUSDT:  { name: 'Ethereum',     symbol: 'ETH', icon: 'Ξ' },
+  SOLUSDT:  { name: 'Solana',       symbol: 'SOL', icon: '◎' },
+  BNBUSDT:  { name: 'BNB',          symbol: 'BNB', icon: '⬡' },
+  XRPUSDT:  { name: 'XRP',          symbol: 'XRP', icon: '✕' },
+  DOGEUSDT: { name: 'Dogecoin',     symbol: 'DOGE', icon: 'Ð' },
+};
+
+function formatPrice(price, symbol) {
+  if (price === undefined) return '—';
+  if (symbol === 'DOGEUSDT' || price < 1) return '$' + price.toFixed(5);
+  if (price < 100) return '$' + price.toFixed(3);
+  return '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 function LivePrices() {
-  const [prices, setPrices] = useState({});
-  const [favorite, setFavorite] = useState(null);
+  const { prices, flashState } = usePrices();
+  const [favorite, setFavorite] = useState(
+    () => localStorage.getItem('cpFavorite') || null
+  );
 
   useEffect(() => {
-    const ws = new WebSocket(
-      'wss://stream.binance.com:9443/stream?streams=' +
-        CRYPTOS.map(c => c.toLowerCase() + '@ticker').join('/')
-    );
+    if (favorite) {
+      localStorage.setItem('cpFavorite', favorite);
+    } else {
+      localStorage.removeItem('cpFavorite');
+    }
+  }, [favorite]);
 
-    ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
-      const symbol = msg.data.s;
-      const price = parseFloat(msg.data.c);
-      setPrices((prev) => ({ ...prev, [symbol]: price }));
-    };
-
-    return () => ws.close();
-  }, []);
   const downloadLivePrices = () => {
-    const blob = new Blob([JSON.stringify(prices, null, 2)], { type: 'application/json' });
+    const snapshot = Object.fromEntries(
+      Object.entries(prices).map(([s, d]) => [s, { price: d.price, change24h: d.change }])
+    );
+    const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'live_prices.json';
     a.click();
   };
 
-  return (
-    <div className="grid">
-        {Object.keys(prices).map((symbol) => (
-          <div
-            key={symbol}
-            className={`card ${favorite === symbol ? 'favorite' : favorite ? 'shrunk' : ''}`}
-          >
-            <div className="card-header">
-              <h3>{symbol}</h3>
-              <button className="star" onClick={() => setFavorite(favorite === symbol ? null : symbol)}>
-                {favorite === symbol ? '⭐' : '☆'}
-              </button>
-            </div>
-            <p>${prices[symbol]?.toFixed(2) || 'Loading...'}</p>
-          </div>
-        ))}
-      
-      <button className="download-btn" onClick={downloadLivePrices}>⬇️ Download Prices</button>
+  const loaded = CRYPTOS.filter(s => prices[s]);
 
+  return (
+    <div className="live-prices-wrapper">
+      <div className="section-header">
+        <h2 className="section-title">Live Prices</h2>
+        <span className="live-badge">● LIVE</span>
+        <button className="btn-outline" onClick={downloadLivePrices} disabled={loaded.length === 0}>
+          ↓ Export JSON
+        </button>
+      </div>
+
+      <div className="prices-grid">
+        {CRYPTOS.map(symbol => {
+          const meta = COIN_META[symbol];
+          const data = prices[symbol];
+          const flash = flashState[symbol];
+          const isFav = favorite === symbol;
+          const isShrunk = favorite && !isFav;
+          const changePositive = data?.change >= 0;
+
+          return (
+            <div
+              key={symbol}
+              className={`price-card${isFav ? ' favorite' : ''}${isShrunk ? ' shrunk' : ''}${flash ? ' flash-' + flash : ''}`}
+            >
+              <div className="card-top">
+                <div className="coin-icon">{meta.icon}</div>
+                <button
+                  className={`star-btn${isFav ? ' starred' : ''}`}
+                  onClick={() => setFavorite(isFav ? null : symbol)}
+                  aria-label="Toggle favorite"
+                >
+                  {isFav ? '★' : '☆'}
+                </button>
+              </div>
+              <div className="coin-name">{meta.name}</div>
+              <div className="coin-symbol">{meta.symbol}</div>
+              <div className="coin-price">
+                {data ? formatPrice(data.price, symbol) : <span className="loading-dots">···</span>}
+              </div>
+              {data && (
+                <div className={`change-badge ${changePositive ? 'up' : 'down'}`}>
+                  {changePositive ? '▲' : '▼'} {Math.abs(data.change).toFixed(2)}%
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

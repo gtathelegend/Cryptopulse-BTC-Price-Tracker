@@ -1,66 +1,130 @@
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
-  justify-content: space-between;
-  background: #00bcd4;
-  color: white;
-  padding: 1rem 2rem;
   align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 64px;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
-.logo {
-  font-weight: 600;
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
 }
-.tabs button {
+
+.navbar-logo-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.navbar-logo-text {
+  font-size: 1.25rem;
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.navbar-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: var(--pill-bg);
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.nav-tab {
   background: transparent;
   border: none;
-  color: white;
-  margin-left: 1rem;
-  font-size: 1rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-secondary);
   cursor: pointer;
-  border-bottom: 2px solid transparent;
-}
-.tabs .active {
-  border-color: white;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 600px) {
+.nav-tab:hover {
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.nav-tab.active {
+  background: var(--primary-gradient);
+  color: white;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--pill-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+@media (max-width: 768px) {
   .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem;
+    padding: 0 1rem;
+    flex-wrap: wrap;
+    height: auto;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
   }
-  .logo {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-  }
-  .tabs {
+
+  .navbar-tabs {
+    order: 3;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    justify-content: center;
   }
-  .tabs button {
-    width: 100%;
-    margin-left: 0;
-    padding: 0.8rem;
-    font-size: 1.1rem;
-    border-radius: 6px;
-    border-bottom: none;
-    background: rgba(255,255,255,0.08);
-    margin-bottom: 0.3rem;
-  }
-  .tabs .active {
-    background: #0097a7;
-    color: #fff;
-    border-radius: 6px;
+
+  .nav-tab {
+    flex: 1;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
   }
 }
 
-/* Improved button appearance */
-.tabs button {
-  transition: background 0.2s, color 0.2s;
-}
-.tabs button:hover {
-  background: rgba(255,255,255,0.15);
-  color: #ffe082;
+@media (max-width: 480px) {
+  .navbar-logo-text {
+    font-size: 1.1rem;
+  }
+
+  .theme-toggle span {
+    display: none;
+  }
+
+  .theme-toggle {
+    padding: 0.4rem 0.6rem;
+  }
 }

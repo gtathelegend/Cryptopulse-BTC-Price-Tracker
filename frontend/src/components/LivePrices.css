@@ -1,110 +1,252 @@
-.grid {
+.live-prices-wrapper {
+  width: 100%;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.live-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 20px;
+  padding: 0.2rem 0.6rem;
+  letter-spacing: 0.5px;
+  animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.btn-outline {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.btn-outline:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Grid */
+.prices-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 }
 
-.card {
-  width: 100%;
-  max-width: 300px;
-  padding: 1.2rem;
-  background: white;
+/* Card */
+.price-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  text-align: center;
-  transition: all 0.3s ease-in-out;
+  padding: 1.25rem;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
   position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
 }
 
+.price-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: var(--primary-gradient);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 0;
+}
 
-.card .card-header {
+.price-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.price-card.favorite {
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.18);
+  transform: scale(1.03);
+}
+
+.price-card.shrunk {
+  transform: scale(0.95);
+  opacity: 0.55;
+}
+
+/* Flash animations */
+@keyframes flash-up {
+  0%   { background-color: rgba(16, 185, 129, 0.18); }
+  100% { background-color: transparent; }
+}
+
+@keyframes flash-down {
+  0%   { background-color: rgba(239, 68, 68, 0.18); }
+  100% { background-color: transparent; }
+}
+
+.price-card.flash-up {
+  animation: flash-up 0.6s ease-out;
+}
+
+.price-card.flash-down {
+  animation: flash-down 0.6s ease-out;
+}
+
+/* Card content */
+.card-top {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.coin-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  background: var(--primary-gradient);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: white;
+  font-weight: 700;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color 0.2s, transform 0.15s;
+  line-height: 1;
+  padding: 0;
+}
+
+.star-btn:hover {
+  color: #f59e0b;
+  transform: scale(1.2);
+}
+
+.star-btn.starred {
+  color: #f59e0b;
+}
+
+.coin-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.1rem;
+}
+
+.coin-symbol {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+}
+
+.coin-price {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
   margin-bottom: 0.5rem;
 }
 
-.card .star {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
+.loading-dots {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  letter-spacing: 3px;
 }
 
-.card.favorite {
-  transform: scale(1.15);
-  z-index: 10;
-  background: #e3f2fd;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+.change-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 20px;
 }
 
-.card.shrunk {
-  transform: scale(0.9);
-  opacity: 0.6;
+.change-badge.up {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
 }
 
-/* Mobile responsiveness */
+.change-badge.down {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+/* Mobile */
 @media (max-width: 600px) {
-  .grid {
+  .prices-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .price-card {
+    padding: 1rem;
+  }
+
+  .coin-price {
+    font-size: 1.15rem;
+  }
+
+  .price-card.favorite {
+    transform: scale(1.01);
+  }
+
+  .price-card.shrunk {
+    transform: scale(0.97);
+  }
+}
+
+@media (max-width: 380px) {
+  .prices-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1rem;
-  }
-  .card {
-    max-width: 100%;
-    padding: 1rem;
-    font-size: 1.05rem;
-  }
-  .card .card-header h3 {
-    font-size: 1.1rem;
-  }
-  .card .star {
-    font-size: 1.6rem;
-    padding: 0.4rem;
-    min-width: 40px;
-    min-height: 40px;
-    border-radius: 50%;
-    background: #e3f2fd;
-    color: #1565c0;
-    transition: background 0.2s;
-  }
-  .card .star:active {
-    background: #bbdefb;
-  }
-  .download-btn {
-    width: 100%;
-    font-size: 1.1rem;
-    padding: 0.8rem;
-    margin: 1rem 0 0.5rem 0;
-  }
-}
-
-/* Improved card appearance */
-.card {
-  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
-  border: 1px solid #e0e0e0;
-}
-.card .star:hover {
-  background: #bbdefb;
-  color: #ffb300;
-}
-
-/* Dark mode support */
-.app.dark .card {
-  background: #1e1e1e;
-  color: #f1f1f1;
-  border: 1px solid #444;
-}
-
-/* Responsive design tweaks */
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    padding: 1rem;
   }
 }
