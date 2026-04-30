@@ -6,10 +6,27 @@ const app = express();
 const PORT = process.env.PORT || 5050;
 
 const cors = require('cors');
+const axios = require('axios');
 
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// Vercel Speed Insights expects this script path in production builds when no DSN/basePath is configured.
+// On non-Vercel deployments (e.g. Render), our SPA catch-all would otherwise return index.html here,
+// which the browser then tries to parse as JS ("Unexpected token '<'").
+app.get('/_vercel/speed-insights/script.js', (req, res) => {
+  res.redirect(302, 'https://va.vercel-scripts.com/v1/speed-insights/script.js');
+});
+
+app.get('/_vercel/speed-insights/script.debug.js', (req, res) => {
+  res.redirect(302, 'https://va.vercel-scripts.com/v1/speed-insights/script.debug.js');
+});
+
+// If the client posts vitals to this endpoint on non-Vercel hosting, accept and no-op.
+app.post('/_vercel/speed-insights/vitals', express.json({ limit: '50kb' }), (req, res) => {
+  res.sendStatus(204);
+});
 
 // REST endpoint: Get 24h history from CoinCap
 app.get('/api/history/:coin', async (req, res) => {
