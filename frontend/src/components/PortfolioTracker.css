@@ -80,6 +80,24 @@
   width: 100%;
 }
 
+.form-select {
+  color-scheme: light;
+}
+
+.form-select option {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+.dark .form-select {
+  color-scheme: dark;
+}
+
+.dark .form-select option {
+  background-color: #1a1b3a;
+  color: #e2e8f0;
+}
+
 .form-select:focus,
 .form-input:focus {
   border-color: var(--primary);
@@ -265,13 +283,62 @@
 }
 
 @media (max-width: 600px) {
-  .table-header,
-  .table-row {
-    grid-template-columns: 1.4fr 0.7fr 1fr 0.9fr 0.3fr;
-    font-size: 0.8rem;
-  }
-
   .portfolio-card {
     padding: 1.1rem;
+  }
+
+  .section-header {
+    margin-bottom: 1.1rem;
+  }
+
+  .portfolio-subtitle {
+    width: 100%;
+    font-size: 0.82rem;
+  }
+
+  .holdings-header {
+    margin-bottom: 0.8rem;
+  }
+
+  .table-header {
+    display: none;
+  }
+
+  .holdings-table {
+    gap: 0.55rem;
+  }
+
+  .table-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "coin remove"
+      "qty value"
+      "price price";
+    row-gap: 0.45rem;
+    column-gap: 0.65rem;
+    padding: 0.85rem;
+    border: 1px solid var(--border);
+    background: rgba(99, 102, 241, 0.05);
+    font-size: 0.84rem;
+  }
+
+  .holding-coin { grid-area: coin; }
+  .holding-qty { grid-area: qty; }
+  .holding-price { grid-area: price; }
+  .holding-value { grid-area: value; text-align: right; }
+  .remove-btn { grid-area: remove; justify-self: end; align-self: start; }
+}
+
+@media (max-width: 420px) {
+  .portfolio-card {
+    padding: 0.95rem;
+  }
+
+  .table-row {
+    padding: 0.75rem;
+  }
+
+  .total-amount {
+    font-size: 1.15rem;
   }
 }

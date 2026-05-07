@@ -105,10 +105,17 @@
     order: 3;
     width: 100%;
     justify-content: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .navbar-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-tab {
-    flex: 1;
+    flex: 1 0 auto;
     text-align: center;
     font-size: 0.85rem;
     padding: 0.4rem 0.6rem;

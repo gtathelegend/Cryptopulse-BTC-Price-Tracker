@@ -21,6 +21,16 @@ function Footer() {
               Vedaang Sharma
             </a>
           </span>
+          <span className="footer-sep">·</span>
+          <a
+            href="https://www.linkedin.com/in/vedaangsharma2006/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-link"
+            aria-label="Vedaang Sharma on LinkedIn"
+          >
+            LinkedIn
+          </a>
         </div>
         <div className="footer-stack">
           {TECH.map(t => (

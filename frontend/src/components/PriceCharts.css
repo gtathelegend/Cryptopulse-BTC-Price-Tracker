@@ -207,13 +207,21 @@
 
   .coin-selector {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .coin-selector::-webkit-scrollbar {
+    display: none;
   }
 
   .coin-btn {
-    flex: 1;
-    min-width: 90px;
+    flex: 0 0 auto;
+    min-width: 110px;
     text-align: center;
     padding: 0.45rem 0.5rem;
     font-size: 0.82rem;
@@ -228,5 +236,25 @@
   .chart-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .btn-outline {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .timeframe-selector {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tf-btn {
+    flex: 1;
+    text-align: center;
+  }
+
+  .chart-container {
+    min-height: 300px;
   }
 }

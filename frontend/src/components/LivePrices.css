@@ -223,6 +223,16 @@
 
 /* Mobile */
 @media (max-width: 600px) {
+  .section-header {
+    margin-bottom: 1.1rem;
+  }
+
+  .btn-outline {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
   .prices-grid {
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
