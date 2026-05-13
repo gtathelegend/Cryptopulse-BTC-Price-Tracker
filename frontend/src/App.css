@@ -2,15 +2,26 @@
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
   background: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--text-primary);
   transition: background 0.3s, color 0.3s;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.app > div,
+.app > .browser-router {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
 }
 
 .content {
   flex: 1;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 2rem 2.5rem;
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
@@ -18,12 +29,12 @@
 
 @media (max-width: 768px) {
   .content {
-    padding: 1rem 0.9rem;
+    padding: 1rem 0.9rem 2rem;
   }
 }
 
 @media (max-width: 600px) {
   .content {
-    padding: 0.85rem 0.7rem;
+    padding: 0.85rem 0.7rem 1.5rem;
   }
 }

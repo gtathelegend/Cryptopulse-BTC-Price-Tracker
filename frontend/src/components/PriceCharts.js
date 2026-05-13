@@ -146,11 +146,16 @@ function PriceCharts() {
                 <LineChart data={chartData} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#6366f1" />
-                      <stop offset="100%" stopColor="#8b5cf6" />
+                      <stop offset="0%"   stopColor="#22d3ee" />
+                      <stop offset="55%"  stopColor="#a855f7" />
+                      <stop offset="100%" stopColor="#ec4899" />
+                    </linearGradient>
+                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%"   stopColor="#a855f7" stopOpacity="0.32" />
+                      <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(99,102,241,0.08)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(168,85,247,0.12)" />
                   <XAxis
                     dataKey="time"
                     tick={{ fontSize: 11, fill: 'var(--text-muted)', fontFamily: 'Inter' }}
@@ -171,9 +176,9 @@ function PriceCharts() {
                     type="monotone"
                     dataKey="price"
                     stroke="url(#lineGrad)"
-                    strokeWidth={2.5}
+                    strokeWidth={2.75}
                     dot={false}
-                    activeDot={{ r: 5, fill: '#6366f1' }}
+                    activeDot={{ r: 5, fill: '#a855f7', stroke: '#22d3ee', strokeWidth: 2 }}
                   />
                 </LineChart>
               </ResponsiveContainer>

@@ -3,12 +3,12 @@ import { usePrices, CRYPTOS } from '../context/PricesContext';
 import './LivePrices.css';
 
 const COIN_META = {
-  BTCUSDT:  { name: 'Bitcoin',      symbol: 'BTC', icon: '₿' },
-  ETHUSDT:  { name: 'Ethereum',     symbol: 'ETH', icon: 'Ξ' },
-  SOLUSDT:  { name: 'Solana',       symbol: 'SOL', icon: '◎' },
-  BNBUSDT:  { name: 'BNB',          symbol: 'BNB', icon: '⬡' },
-  XRPUSDT:  { name: 'XRP',          symbol: 'XRP', icon: '✕' },
-  DOGEUSDT: { name: 'Dogecoin',     symbol: 'DOGE', icon: 'Ð' },
+  BTCUSDT:  { name: 'Bitcoin',  symbol: 'BTC',  icon: '₿', tint: 'amber'  },
+  ETHUSDT:  { name: 'Ethereum', symbol: 'ETH',  icon: 'Ξ', tint: 'violet' },
+  SOLUSDT:  { name: 'Solana',   symbol: 'SOL',  icon: '◎', tint: 'emerald'},
+  BNBUSDT:  { name: 'BNB',      symbol: 'BNB',  icon: '⬡', tint: 'amber'  },
+  XRPUSDT:  { name: 'XRP',      symbol: 'XRP',  icon: '✕', tint: 'cyan'   },
+  DOGEUSDT: { name: 'Dogecoin', symbol: 'DOGE', icon: 'Ð', tint: 'pink'   },
 };
 
 function formatPrice(price, symbol) {
@@ -67,7 +67,7 @@ function LivePrices() {
           return (
             <div
               key={symbol}
-              className={`price-card${isFav ? ' favorite' : ''}${isShrunk ? ' shrunk' : ''}${flash ? ' flash-' + flash : ''}`}
+              className={`price-card tint-${meta.tint}${isFav ? ' favorite' : ''}${isShrunk ? ' shrunk' : ''}${flash ? ' flash-' + flash : ''}`}
             >
               <div className="card-top">
                 <div className="coin-icon">{meta.icon}</div>
