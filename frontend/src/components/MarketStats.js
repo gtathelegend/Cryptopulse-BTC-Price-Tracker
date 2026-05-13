@@ -61,7 +61,7 @@ function StatItem({ label, value, change }) {
       <span className="stat-value">{value}</span>
       {change !== undefined && change !== null && (
         <span className={`stat-change ${change >= 0 ? 'up' : 'down'}`}>
-          {change >= 0 ? '▲' : '▼'} {Math.abs(change).toFixed(2)}%
+          {change >= 0 ? '+' : ''}{change.toFixed(2)}%
         </span>
       )}
     </div>

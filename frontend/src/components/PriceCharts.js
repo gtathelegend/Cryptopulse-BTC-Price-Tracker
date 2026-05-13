@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
+  XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Area, AreaChart
 } from 'recharts';
 import './PriceCharts.css';
 
@@ -94,27 +94,32 @@ function PriceCharts() {
     ? ((chartData[chartData.length - 1].price - chartData[0].price) / chartData[0].price) * 100
     : null;
 
+  const positive = priceChange === null || priceChange >= 0;
+  const lineColor = positive ? 'var(--up)' : 'var(--down)';
+
   return (
-    <div className="charts-wrapper">
-      <div className="section-header">
-        <h2 className="section-title">Price Charts</h2>
-        <button className="btn-outline" onClick={downloadReport} disabled={!chartData}>
-          ↓ Export JSON
+    <div className="panel">
+      <div className="panel-header">
+        <h2 className="panel-title">Price Charts</h2>
+        <button className="btn-ghost" onClick={downloadReport} disabled={!chartData}>
+          Export JSON
         </button>
       </div>
 
       <div className="charts-layout">
-        <div className="coin-selector">
+        <aside className="coin-selector" role="tablist" aria-label="Select coin">
           {Object.entries(COINS).map(([s, name]) => (
             <button
               key={s}
+              role="tab"
+              aria-selected={selectedCoin === s}
               className={`coin-btn${selectedCoin === s ? ' active' : ''}`}
               onClick={() => setSelectedCoin(s)}
             >
               {name}
             </button>
           ))}
-        </div>
+        </aside>
 
         <div className="chart-panel">
           <div className="chart-header">
@@ -122,14 +127,16 @@ function PriceCharts() {
               <span className="chart-coin-name">{COINS[selectedCoin]}</span>
               {priceChange !== null && (
                 <span className={`chart-change ${priceChange >= 0 ? 'up' : 'down'}`}>
-                  {priceChange >= 0 ? '▲' : '▼'} {Math.abs(priceChange).toFixed(2)}%
+                  {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
                 </span>
               )}
             </div>
-            <div className="timeframe-selector">
+            <div className="timeframe-selector" role="tablist" aria-label="Select timeframe">
               {TIMEFRAMES.map(tf => (
                 <button
                   key={tf.id}
+                  role="tab"
+                  aria-selected={timeframe === tf.id}
                   className={`tf-btn${timeframe === tf.id ? ' active' : ''}`}
                   onClick={() => setTimeframe(tf.id)}
                 >
@@ -143,19 +150,14 @@ function PriceCharts() {
             {loading && <div className="chart-loading">Loading chart data…</div>}
             {!loading && chartData && (
               <ResponsiveContainer width="100%" height={360}>
-                <LineChart data={chartData} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+                <AreaChart data={chartData} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
                   <defs>
-                    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%"   stopColor="#22d3ee" />
-                      <stop offset="55%"  stopColor="#a855f7" />
-                      <stop offset="100%" stopColor="#ec4899" />
-                    </linearGradient>
-                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%"   stopColor="#a855f7" stopOpacity="0.32" />
-                      <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
+                    <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%"   stopColor={positive ? '#4DFFBC' : '#FF4D4D'} stopOpacity="0.22" />
+                      <stop offset="100%" stopColor={positive ? '#4DFFBC' : '#FF4D4D'} stopOpacity="0" />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(168,85,247,0.12)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--divider)" />
                   <XAxis
                     dataKey="time"
                     tick={{ fontSize: 11, fill: 'var(--text-muted)', fontFamily: 'Inter' }}
@@ -171,16 +173,16 @@ function PriceCharts() {
                     width={72}
                     tickFormatter={v => v >= 1000 ? '$' + (v / 1000).toFixed(1) + 'k' : '$' + v.toFixed(2)}
                   />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Line
+                  <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--border-strong)', strokeWidth: 1 }} />
+                  <Area
                     type="monotone"
                     dataKey="price"
-                    stroke="url(#lineGrad)"
-                    strokeWidth={2.75}
-                    dot={false}
-                    activeDot={{ r: 5, fill: '#a855f7', stroke: '#22d3ee', strokeWidth: 2 }}
+                    stroke={lineColor}
+                    strokeWidth={2}
+                    fill="url(#areaFill)"
+                    activeDot={{ r: 4, fill: lineColor, stroke: 'var(--surface)', strokeWidth: 2 }}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             )}
             {!loading && !chartData && (

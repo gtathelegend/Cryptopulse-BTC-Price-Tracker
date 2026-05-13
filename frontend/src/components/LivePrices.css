@@ -1,288 +1,220 @@
-.live-prices-wrapper {
+/* ===== Shared panel / section header ===== */
+.panel {
   width: 100%;
 }
 
-.section-header {
+.panel-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
   flex-wrap: wrap;
 }
 
-.section-title {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 1.55rem;
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.panel-title {
+  font-size: 1.45rem;
   font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.4px;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.panel-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-2);
 }
 
 .live-badge {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--up);
-  background: rgba(16, 217, 153, 0.12);
-  border: 1px solid rgba(16, 217, 153, 0.28);
-  border-radius: 999px;
-  padding: 0.2rem 0.65rem;
-  letter-spacing: 0.5px;
-  animation: pulse-badge 2s infinite;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: var(--space-2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--up);
+  background: var(--up-bg);
+  border-radius: 999px;
+  padding: 4px 10px 4px 8px;
 }
 
-@keyframes pulse-badge {
-  0%, 100% { opacity: 1;   }
-  50%      { opacity: 0.55; }
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--up);
+  animation: pulse-soft 1.6s ease-in-out infinite;
 }
 
-.btn-outline {
-  margin-left: auto;
-  background: var(--card-bg);
+/* Ghost button */
+.btn-ghost {
+  background: var(--surface);
   border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 0.45rem 1rem;
-  border-radius: 10px;
-  font-size: 0.85rem;
+  color: var(--text-2);
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--r);
+  font-size: 0.84rem;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   cursor: pointer;
-  transition: all 0.2s;
-  backdrop-filter: blur(8px);
+  transition: color 0.18s, border-color 0.18s;
 }
 
-.btn-outline:hover:not(:disabled) {
-  border-color: var(--aurora-cyan);
-  color: var(--aurora-cyan);
-  background: rgba(6, 182, 212, 0.08);
+.btn-ghost:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--text);
 }
 
-.btn-outline:disabled {
-  opacity: 0.4;
+.btn-ghost:disabled {
+  opacity: 0.45;
   cursor: default;
 }
 
-/* Grid */
+/* Prices grid */
 .prices-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 1.1rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-3);
 }
 
-/* Card */
 .price-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 18px;
-  padding: 1.3rem;
-  box-shadow: var(--card-shadow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, border-color 0.25s ease;
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(14px);
-  isolation: isolate;
-}
-
-.price-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--coin-glow);
-  opacity: 0.08;
-  z-index: -1;
-  transition: opacity 0.3s;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--space-5);
+  transition: border-color 0.18s, transform 0.18s, background 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .price-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.price-card:hover::before {
-  opacity: 0.16;
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
 }
 
 .price-card.favorite {
-  border-color: var(--coin-border);
-  box-shadow: 0 14px 40px var(--coin-shadow);
-  transform: scale(1.03);
+  border-color: var(--text);
 }
 
-.price-card.favorite::before {
-  opacity: 0.22;
+.dark .price-card.favorite {
+  border-color: var(--gray-light);
 }
 
-.price-card.shrunk {
-  transform: scale(0.95);
-  opacity: 0.55;
-}
+.price-card.flash-up   { background: var(--up-bg); }
+.price-card.flash-down { background: var(--down-bg); }
 
-/* Tint variants */
-.tint-cyan    { --coin-grad: linear-gradient(135deg, #22d3ee, #06b6d4);
-                --coin-glow: radial-gradient(circle at top right, #22d3ee, transparent 60%);
-                --coin-border: rgba(6,182,212,0.5);
-                --coin-shadow: rgba(6,182,212,0.30); }
-.tint-violet  { --coin-grad: linear-gradient(135deg, #c084fc, #7c3aed);
-                --coin-glow: radial-gradient(circle at top right, #a855f7, transparent 60%);
-                --coin-border: rgba(168,85,247,0.5);
-                --coin-shadow: rgba(168,85,247,0.30); }
-.tint-pink    { --coin-grad: linear-gradient(135deg, #f472b6, #db2777);
-                --coin-glow: radial-gradient(circle at top right, #ec4899, transparent 60%);
-                --coin-border: rgba(236,72,153,0.5);
-                --coin-shadow: rgba(236,72,153,0.30); }
-.tint-emerald { --coin-grad: linear-gradient(135deg, #34d399, #059669);
-                --coin-glow: radial-gradient(circle at top right, #10d999, transparent 60%);
-                --coin-border: rgba(16,217,153,0.5);
-                --coin-shadow: rgba(16,217,153,0.30); }
-.tint-amber   { --coin-grad: linear-gradient(135deg, #fbbf24, #f59e0b);
-                --coin-glow: radial-gradient(circle at top right, #f59e0b, transparent 60%);
-                --coin-border: rgba(245,158,11,0.5);
-                --coin-shadow: rgba(245,158,11,0.30); }
-
-/* Flash animations */
-@keyframes flash-up {
-  0%   { box-shadow: 0 0 0 2px rgba(16, 217, 153, 0.55), 0 12px 28px rgba(16, 217, 153, 0.30); }
-  100% { box-shadow: var(--card-shadow); }
-}
-
-@keyframes flash-down {
-  0%   { box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.55), 0 12px 28px rgba(244, 63, 94, 0.30); }
-  100% { box-shadow: var(--card-shadow); }
-}
-
-.price-card.flash-up   { animation: flash-up   0.7s ease-out; }
-.price-card.flash-down { animation: flash-down 0.7s ease-out; }
-
-/* Card content */
 .card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 0.75rem;
+  gap: var(--space-3);
 }
 
-.coin-icon {
-  width: 44px;
-  height: 44px;
+.coin-meta {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--coin-grad);
-  border-radius: 12px;
-  font-size: 1.15rem;
-  color: white;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.coin-symbol {
+  font-size: 0.78rem;
   font-weight: 700;
-  box-shadow: 0 6px 16px var(--coin-shadow);
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+}
+
+.coin-name {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--text);
 }
 
 .star-btn {
   background: none;
   border: none;
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   cursor: pointer;
-  color: var(--text-muted);
-  transition: color 0.2s, transform 0.15s;
+  color: var(--gray-light);
+  transition: color 0.15s, transform 0.15s;
   line-height: 1;
-  padding: 0;
+  padding: 2px 4px;
+  border-radius: 4px;
 }
 
 .star-btn:hover {
-  color: var(--aurora-amber);
-  transform: scale(1.2);
+  color: var(--text);
+  transform: scale(1.1);
 }
 
 .star-btn.starred {
-  color: var(--aurora-amber);
-  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.65));
-}
-
-.coin-name {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 1.02rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 0.1rem;
-  letter-spacing: -0.2px;
-}
-
-.coin-symbol {
-  font-size: 0.76rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 0.85rem;
+  color: var(--accent);
 }
 
 .coin-price {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-family: var(--font-mono);
   font-size: 1.55rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-weight: 600;
+  color: var(--text);
   letter-spacing: -0.6px;
-  margin-bottom: 0.55rem;
   font-variant-numeric: tabular-nums;
 }
 
 .loading-dots {
-  color: var(--text-muted);
+  color: var(--gray-light);
   font-size: 1.1rem;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
 }
 
 .change-badge {
   display: inline-flex;
+  align-self: flex-start;
   align-items: center;
-  gap: 0.2rem;
+  font-family: var(--font-mono);
   font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.22rem 0.6rem;
+  font-weight: 600;
+  padding: 4px 10px;
   border-radius: 999px;
+  font-variant-numeric: tabular-nums;
 }
 
 .change-badge.up {
-  background: rgba(16, 217, 153, 0.14);
+  background: var(--up-bg);
   color: var(--up);
 }
 
 .change-badge.down {
-  background: rgba(244, 63, 94, 0.14);
+  background: var(--down-bg);
   color: var(--down);
 }
 
 /* Mobile */
 @media (max-width: 600px) {
-  .section-header {
-    margin-bottom: 1.1rem;
+  .panel-header {
+    margin-bottom: var(--space-4);
   }
 
-  .btn-outline {
+  .btn-ghost {
     margin-left: 0;
-    width: 100%;
-    text-align: center;
   }
 
   .prices-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
+    gap: var(--space-2);
   }
 
   .price-card {
-    padding: 1rem;
+    padding: var(--space-4);
   }
 
   .coin-price {
-    font-size: 1.2rem;
-  }
-
-  .price-card.favorite {
-    transform: scale(1.01);
-  }
-
-  .price-card.shrunk {
-    transform: scale(0.97);
+    font-size: 1.25rem;
   }
 }
 

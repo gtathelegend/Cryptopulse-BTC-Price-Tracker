@@ -3,12 +3,12 @@ import { usePrices, CRYPTOS } from '../context/PricesContext';
 import './LivePrices.css';
 
 const COIN_META = {
-  BTCUSDT:  { name: 'Bitcoin',  symbol: 'BTC',  icon: '₿', tint: 'amber'  },
-  ETHUSDT:  { name: 'Ethereum', symbol: 'ETH',  icon: 'Ξ', tint: 'violet' },
-  SOLUSDT:  { name: 'Solana',   symbol: 'SOL',  icon: '◎', tint: 'emerald'},
-  BNBUSDT:  { name: 'BNB',      symbol: 'BNB',  icon: '⬡', tint: 'amber'  },
-  XRPUSDT:  { name: 'XRP',      symbol: 'XRP',  icon: '✕', tint: 'cyan'   },
-  DOGEUSDT: { name: 'Dogecoin', symbol: 'DOGE', icon: 'Ð', tint: 'pink'   },
+  BTCUSDT:  { name: 'Bitcoin',  symbol: 'BTC' },
+  ETHUSDT:  { name: 'Ethereum', symbol: 'ETH' },
+  SOLUSDT:  { name: 'Solana',   symbol: 'SOL' },
+  BNBUSDT:  { name: 'BNB',      symbol: 'BNB' },
+  XRPUSDT:  { name: 'XRP',      symbol: 'XRP' },
+  DOGEUSDT: { name: 'Dogecoin', symbol: 'DOGE' },
 };
 
 function formatPrice(price, symbol) {
@@ -46,12 +46,14 @@ function LivePrices() {
   const loaded = CRYPTOS.filter(s => prices[s]);
 
   return (
-    <div className="live-prices-wrapper">
-      <div className="section-header">
-        <h2 className="section-title">Live Prices</h2>
-        <span className="live-badge">● LIVE</span>
-        <button className="btn-outline" onClick={downloadLivePrices} disabled={loaded.length === 0}>
-          ↓ Export JSON
+    <div className="panel">
+      <div className="panel-header">
+        <div className="panel-title-row">
+          <h2 className="panel-title">Live Prices</h2>
+          <span className="live-badge"><span className="live-dot" />Live</span>
+        </div>
+        <button className="btn-ghost" onClick={downloadLivePrices} disabled={loaded.length === 0}>
+          Export JSON
         </button>
       </div>
 
@@ -61,32 +63,33 @@ function LivePrices() {
           const data = prices[symbol];
           const flash = flashState[symbol];
           const isFav = favorite === symbol;
-          const isShrunk = favorite && !isFav;
           const changePositive = data?.change >= 0;
 
           return (
             <div
               key={symbol}
-              className={`price-card tint-${meta.tint}${isFav ? ' favorite' : ''}${isShrunk ? ' shrunk' : ''}${flash ? ' flash-' + flash : ''}`}
+              className={`price-card${isFav ? ' favorite' : ''}${flash ? ' flash-' + flash : ''}`}
             >
               <div className="card-top">
-                <div className="coin-icon">{meta.icon}</div>
+                <div className="coin-meta">
+                  <div className="coin-symbol">{meta.symbol}</div>
+                  <div className="coin-name">{meta.name}</div>
+                </div>
                 <button
                   className={`star-btn${isFav ? ' starred' : ''}`}
                   onClick={() => setFavorite(isFav ? null : symbol)}
-                  aria-label="Toggle favorite"
+                  aria-label={isFav ? `Unstar ${meta.name}` : `Star ${meta.name}`}
+                  title={isFav ? 'Remove from watchlist' : 'Add to watchlist'}
                 >
                   {isFav ? '★' : '☆'}
                 </button>
               </div>
-              <div className="coin-name">{meta.name}</div>
-              <div className="coin-symbol">{meta.symbol}</div>
               <div className="coin-price">
-                {data ? formatPrice(data.price, symbol) : <span className="loading-dots">···</span>}
+                {data ? formatPrice(data.price, symbol) : <span className="loading-dots">— — —</span>}
               </div>
               {data && (
                 <div className={`change-badge ${changePositive ? 'up' : 'down'}`}>
-                  {changePositive ? '▲' : '▼'} {Math.abs(data.change).toFixed(2)}%
+                  {changePositive ? '+' : ''}{data.change.toFixed(2)}%
                 </div>
               )}
             </div>

@@ -5,59 +5,55 @@ import Footer from '../components/Footer';
 import { usePrices } from '../context/PricesContext';
 import './Landing.css';
 
+const TICKER_SYMBOLS = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT'];
+
 const COIN_META = {
-  BTCUSDT:  { name: 'Bitcoin',  symbol: 'BTC',  icon: '₿', gradient: 'linear-gradient(135deg, #f59e0b, #ec4899)' },
-  ETHUSDT:  { name: 'Ethereum', symbol: 'ETH',  icon: 'Ξ', gradient: 'linear-gradient(135deg, #06b6d4, #a855f7)' },
-  SOLUSDT:  { name: 'Solana',   symbol: 'SOL',  icon: '◎', gradient: 'linear-gradient(135deg, #10d999, #06b6d4)' },
+  BTCUSDT: { name: 'Bitcoin',  symbol: 'BTC' },
+  ETHUSDT: { name: 'Ethereum', symbol: 'ETH' },
+  SOLUSDT: { name: 'Solana',   symbol: 'SOL' },
 };
 
 const FEATURES = [
   {
-    icon: '⚡',
-    title: 'Live Streaming Prices',
-    desc: 'Sub-second updates straight from the Binance WebSocket feed. Six top assets, with visual green/red flashes on every tick.',
-    accent: 'cyan',
+    label: '01',
+    title: 'Live streaming prices',
+    desc: 'Sub-second price updates from the Binance WebSocket feed. Six top assets, with visual indicators for every tick.',
   },
   {
-    icon: '📈',
-    title: 'Multi-Timeframe Charts',
-    desc: '1H, 24H, 7D, 30D historical charts with smooth gradient lines and interactive tooltips. Cached for instant switching.',
-    accent: 'violet',
+    label: '02',
+    title: 'Multi-timeframe charts',
+    desc: '1H, 24H, 7D, and 30D historical charts. Cached for instant switching between assets and ranges.',
   },
   {
-    icon: '💼',
-    title: 'Portfolio Tracker',
-    desc: 'Add your holdings and watch their live USD value update in real time. Persists across sessions with localStorage.',
-    accent: 'pink',
+    label: '03',
+    title: 'Portfolio tracker',
+    desc: 'Add your holdings, see live USD value in real time. Persists across sessions on your device.',
   },
   {
-    icon: '🌐',
-    title: 'Global Market Stats',
-    desc: 'Total market cap, 24h volume, BTC and ETH dominance — pulled live from CoinGecko on every load.',
-    accent: 'emerald',
+    label: '04',
+    title: 'Global market stats',
+    desc: 'Total market cap, 24h volume, BTC and ETH dominance — fetched live from CoinGecko.',
   },
   {
-    icon: '⭐',
+    label: '05',
     title: 'Watchlist',
-    desc: 'Star your favorite coin to scale it up and dim the rest. Saved to your device so it sticks around between visits.',
-    accent: 'amber',
+    desc: 'Star your preferred asset to elevate it on the dashboard. Saved locally between visits.',
   },
   {
-    icon: '🌓',
-    title: 'Light & Dark Mode',
-    desc: 'A polished glassmorphism UI that respects your system preference and remembers your choice.',
-    accent: 'cyan',
+    label: '06',
+    title: 'Light & dark mode',
+    desc: 'A restrained, readable interface that respects your system theme and remembers your choice.',
   },
 ];
 
 const TECH_STACK = [
-  { name: 'React 19',         desc: 'UI library',          accent: 'cyan' },
-  { name: 'React Router',     desc: 'Client routing',      accent: 'violet' },
-  { name: 'Recharts',         desc: 'Interactive charts',  accent: 'pink' },
-  { name: 'Binance WebSocket',desc: 'Live price stream',   accent: 'emerald' },
-  { name: 'CoinGecko API',    desc: 'Global market data',  accent: 'amber' },
-  { name: 'Node + Express',   desc: 'Backend on Render',   accent: 'cyan' },
-  { name: 'Vercel',           desc: 'Frontend hosting',    accent: 'violet' },
+  { name: 'React 19',          desc: 'UI framework' },
+  { name: 'React Router',      desc: 'Client routing' },
+  { name: 'Recharts',          desc: 'Charting library' },
+  { name: 'Binance WebSocket', desc: 'Live price stream' },
+  { name: 'CoinGecko API',     desc: 'Global market data' },
+  { name: 'Node + Express',    desc: 'Backend on Render' },
+  { name: 'Vercel',            desc: 'Frontend hosting' },
 ];
 
 function formatPrice(price, symbol) {
@@ -67,27 +63,30 @@ function formatPrice(price, symbol) {
   return '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function LiveTicker({ symbol }) {
+function LiveTickerRow() {
   const { prices, flashState } = usePrices();
-  const data = prices[symbol];
-  const meta = COIN_META[symbol];
-  const flash = flashState[symbol];
-  const up = data && data.change >= 0;
-
   return (
-    <div className={`ticker-chip${flash ? ' flash-' + flash : ''}`}>
-      <span className="ticker-icon" style={{ background: meta.gradient }}>{meta.icon}</span>
-      <div className="ticker-info">
-        <span className="ticker-symbol">{meta.symbol}</span>
-        <span className="ticker-price">
-          {data ? formatPrice(data.price, symbol) : <span className="ticker-loading">···</span>}
-        </span>
-      </div>
-      {data && (
-        <span className={`ticker-change ${up ? 'up' : 'down'}`}>
-          {up ? '▲' : '▼'} {Math.abs(data.change).toFixed(2)}%
-        </span>
-      )}
+    <div className="ticker-row" role="list">
+      {TICKER_SYMBOLS.map(symbol => {
+        const data = prices[symbol];
+        const meta = COIN_META[symbol];
+        const flash = flashState[symbol];
+        const up = data && data.change >= 0;
+        return (
+          <div key={symbol} className={`ticker-cell${flash ? ' flash-' + flash : ''}`} role="listitem">
+            <div className="ticker-cell-head">
+              <span className="ticker-cell-symbol">{meta.symbol}</span>
+              <span className="ticker-cell-name">{meta.name}</span>
+            </div>
+            <div className="ticker-cell-price">
+              {data ? formatPrice(data.price, symbol) : <span className="ticker-loading">— — —</span>}
+            </div>
+            <div className={`ticker-cell-change ${data ? (up ? 'up' : 'down') : 'neutral'}`}>
+              {data ? `${up ? '+' : ''}${data.change.toFixed(2)}%` : '—'}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -100,122 +99,125 @@ function Landing() {
       <main className="landing">
         {/* Hero */}
         <section className="hero">
-          <div className="hero-orbs" aria-hidden="true">
-            <span className="orb orb-cyan" />
-            <span className="orb orb-violet" />
-            <span className="orb orb-pink" />
-          </div>
-
           <div className="hero-inner">
-            <span className="hero-badge">
-              <span className="pulse-dot" /> Live data · WebSocket powered
-            </span>
+            <div className="hero-eyebrow">
+              <span className="eyebrow-dot" />
+              <span>Live · WebSocket powered</span>
+            </div>
             <h1 className="hero-title">
-              The crypto dashboard{' '}
-              <span className="gradient-text">that pulses with the market.</span>
+              A real-time crypto<br />
+              dashboard, made simple.
             </h1>
             <p className="hero-sub">
-              Track Bitcoin and top crypto assets in real time. Streaming prices, multi-timeframe charts,
-              and a live portfolio tracker — all wrapped in a clean, modern interface.
+              Track Bitcoin and top crypto assets in real time. Streaming prices,
+              multi-timeframe charts, and a live portfolio tracker — in a clean,
+              focused interface.
             </p>
 
             <div className="hero-cta">
-              <Link to="/app" className="btn-hero-primary">
-                Launch the App <span className="arrow">→</span>
+              <Link to="/app" className="btn-primary">
+                Launch the app
+                <span className="btn-arrow" aria-hidden="true">→</span>
               </Link>
               <a
                 href="https://github.com/gtathelegend/Cryptopulse-BTC-Price-Tracker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-hero-ghost"
+                className="btn-secondary"
               >
-                <span className="gh-mark">◆</span> View on GitHub
+                View source
               </a>
             </div>
+          </div>
 
-            <div className="hero-tickers">
-              <LiveTicker symbol="BTCUSDT" />
-              <LiveTicker symbol="ETHUSDT" />
-              <LiveTicker symbol="SOLUSDT" />
+          <div className="hero-ticker-wrap">
+            <div className="ticker-label">
+              <span className="pulse-dot" /> Live now
             </div>
+            <LiveTickerRow />
           </div>
         </section>
 
         {/* Features */}
-        <section className="section section-features">
+        <section className="section" id="features">
           <div className="section-head">
-            <span className="kicker kicker-cyan">Features</span>
-            <h2 className="section-h2">Everything you need to read the market at a glance.</h2>
+            <span className="section-kicker">Features</span>
+            <h2 className="section-title">Everything you need to read the market at a glance.</h2>
             <p className="section-lead">
-              Built with a focus on speed, clarity, and real-time accuracy. Every component talks to a single
-              WebSocket connection, so the whole dashboard updates in lockstep.
+              Built around a single WebSocket connection, so every part of the
+              dashboard updates in lockstep. No polling. No drift.
             </p>
           </div>
 
           <div className="features-grid">
             {FEATURES.map(f => (
-              <div key={f.title} className={`feature-card accent-${f.accent}`}>
-                <div className="feature-icon-wrap">
-                  <span className="feature-icon">{f.icon}</span>
-                </div>
+              <article key={f.title} className="feature">
+                <div className="feature-num">{f.label}</div>
                 <h3 className="feature-title">{f.title}</h3>
                 <p className="feature-desc">{f.desc}</p>
-              </div>
+              </article>
             ))}
           </div>
         </section>
 
         {/* How it works */}
-        <section className="section section-how">
+        <section className="section" id="how">
           <div className="section-head">
-            <span className="kicker kicker-violet">How it works</span>
-            <h2 className="section-h2">A single WebSocket feeds the entire UI.</h2>
+            <span className="section-kicker">How it works</span>
+            <h2 className="section-title">One stream. Distributed to the whole UI.</h2>
             <p className="section-lead">
-              One stream from Binance, fanned out through React Context. Every tab — prices, charts, portfolio —
-              consumes the same source of truth, so nothing ever drifts out of sync.
+              A single connection to Binance's combined ticker stream, fanned out
+              through React Context — so prices, charts and portfolio share one
+              source of truth.
             </p>
           </div>
 
-          <div className="how-grid">
-            <div className="how-step">
+          <ol className="how-steps">
+            <li className="how-step">
               <span className="how-num">01</span>
-              <h4>Connect</h4>
-              <p>Open a single WebSocket to Binance's combined ticker stream for six top assets.</p>
-            </div>
-            <div className="how-arrow" aria-hidden="true">→</div>
-            <div className="how-step">
+              <div>
+                <h4>Connect</h4>
+                <p>Open a single WebSocket to Binance's combined ticker stream for the six tracked assets.</p>
+              </div>
+            </li>
+            <li className="how-step">
               <span className="how-num">02</span>
-              <h4>Distribute</h4>
-              <p>A React Context fans the live ticks out to every component without extra connections.</p>
-            </div>
-            <div className="how-arrow" aria-hidden="true">→</div>
-            <div className="how-step">
+              <div>
+                <h4>Distribute</h4>
+                <p>React Context fans live ticks out to every component — without extra network connections.</p>
+              </div>
+            </li>
+            <li className="how-step">
               <span className="how-num">03</span>
-              <h4>Render</h4>
-              <p>Cards flash green or red on price changes; charts and portfolio values update instantly.</p>
-            </div>
-          </div>
+              <div>
+                <h4>Render</h4>
+                <p>Cards animate on price changes; charts and portfolio totals stay in perfect sync.</p>
+              </div>
+            </li>
+          </ol>
 
           <div className="tech-stack">
             <span className="tech-stack-label">Built with</span>
-            <div className="tech-pills">
+            <ul className="tech-list">
               {TECH_STACK.map(t => (
-                <div key={t.name} className={`tech-pill accent-${t.accent}`}>
-                  <span className="tech-pill-name">{t.name}</span>
-                  <span className="tech-pill-desc">{t.desc}</span>
-                </div>
+                <li key={t.name} className="tech-item">
+                  <span className="tech-name">{t.name}</span>
+                  <span className="tech-dot" aria-hidden="true">·</span>
+                  <span className="tech-desc">{t.desc}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
 
-        {/* Final CTA */}
+        {/* CTA */}
         <section className="section section-cta">
-          <div className="cta-card">
+          <div className="cta-inner">
             <h2 className="cta-title">Ready to watch the market move?</h2>
-            <p className="cta-sub">Jump straight into the dashboard — no sign-up, no friction.</p>
-            <Link to="/app" className="btn-hero-primary btn-hero-primary-lg">
-              Launch the App <span className="arrow">→</span>
+            <p className="cta-sub">Jump straight into the dashboard — no sign-up.</p>
+            <Link to="/app" className="btn-primary">
+              Launch the app
+              <span className="btn-arrow" aria-hidden="true">→</span>
             </Link>
           </div>
         </section>

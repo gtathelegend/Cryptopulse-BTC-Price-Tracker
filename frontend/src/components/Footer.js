@@ -8,7 +8,10 @@ function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-left">
-          <span className="footer-logo">⚡ CryptoPulse</span>
+          <span className="footer-logo">
+            <span className="footer-dot" aria-hidden="true" />
+            CryptoPulse
+          </span>
           <span className="footer-sep">·</span>
           <span className="footer-by">
             Built by{' '}

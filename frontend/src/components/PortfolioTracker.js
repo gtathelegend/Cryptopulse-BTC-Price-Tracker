@@ -52,20 +52,23 @@ function PortfolioTracker() {
       : '$' + v.toFixed(2);
 
   return (
-    <div className="portfolio-wrapper">
-      <div className="section-header">
-        <h2 className="section-title">Portfolio</h2>
-        <span className="portfolio-subtitle">Track your crypto holdings in real-time</span>
+    <div className="panel">
+      <div className="panel-header">
+        <div className="panel-title-row">
+          <h2 className="panel-title">Portfolio</h2>
+          <span className="panel-subtitle">Track your crypto holdings in real time</span>
+        </div>
       </div>
 
       <div className="portfolio-layout">
         {/* Add holding form */}
         <div className="portfolio-card add-card">
-          <h3 className="card-heading">Add Holding</h3>
+          <h3 className="card-heading">Add holding</h3>
           <form onSubmit={addHolding} className="add-form">
             <div className="form-row">
-              <label className="form-label">Coin</label>
+              <label className="form-label" htmlFor="port-coin">Coin</label>
               <select
+                id="port-coin"
                 className="form-select"
                 value={form.symbol}
                 onChange={e => setForm(f => ({ ...f, symbol: e.target.value }))}
@@ -76,8 +79,9 @@ function PortfolioTracker() {
               </select>
             </div>
             <div className="form-row">
-              <label className="form-label">Quantity</label>
+              <label className="form-label" htmlFor="port-qty">Quantity</label>
               <input
+                id="port-qty"
                 className="form-input"
                 type="number"
                 step="any"
@@ -88,7 +92,7 @@ function PortfolioTracker() {
               />
             </div>
             {error && <p className="form-error">{error}</p>}
-            <button type="submit" className="btn-primary">+ Add to Portfolio</button>
+            <button type="submit" className="btn-primary btn-block">Add to portfolio</button>
           </form>
         </div>
 
@@ -98,7 +102,7 @@ function PortfolioTracker() {
             <h3 className="card-heading">Holdings</h3>
             {holdings.length > 0 && (
               <div className="total-value">
-                <span className="total-label">Total Value</span>
+                <span className="total-label">Total value</span>
                 <span className="total-amount">{formatValue(totalValue)}</span>
               </div>
             )}
@@ -106,7 +110,7 @@ function PortfolioTracker() {
 
           {holdings.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">📊</div>
+              <div className="empty-icon" aria-hidden="true">○</div>
               <p>No holdings yet. Add your first coin above.</p>
             </div>
           ) : (
@@ -133,7 +137,7 @@ function PortfolioTracker() {
                       {price ? formatValue(price) : '—'}
                       {change !== undefined && (
                         <span className={`inline-change ${change >= 0 ? 'up' : 'down'}`}>
-                          {change >= 0 ? '▲' : '▼'}{Math.abs(change).toFixed(2)}%
+                          {change >= 0 ? '+' : ''}{change.toFixed(2)}%
                         </span>
                       )}
                     </span>
